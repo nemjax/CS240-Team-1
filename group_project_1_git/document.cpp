@@ -23,7 +23,8 @@ class document{
         int cursorY;
         int height;
         int width;
-        std::ifstream in;
+        std::ifstream in;//we could have this in every function but that is inefficient
+        int fileLength;
     
     public:
         
@@ -33,6 +34,18 @@ class document{
             open(path);
             top = -1;
             in.open(documentPath.c_str());
+            if (!in.is_open()){
+                printf("error!");//connection to ayca's error code here
+            }
+            //find file length.  note that we can't use in.end due to accuracy issues.
+            in.seekg(in.beg);
+            int i = 0;
+            std::string window = "";
+            while (in.peek() != -1){
+                i++;
+            }
+            in.seekg(in.beg);
+            fileLength = i;
         }
 
         void open(std::string path){
@@ -49,12 +62,11 @@ class document{
         
         /*
          * window: a function that takes the current width and height in chars and 
-         * returns a std::string containing the text on the screen
+         * returns a std::string containing the text to be displayed on the screen
          */
         std::string window(){
-            if (!in.is_open()){
-                printf("error!");//connection to ayca's error code here
-            }
+            int file_pointer = in.tellg();//these are file pointers, look at learncpp.com for more info.
+            in.seekg(in.beg);
             int i = 0;
             std::string window = "";
             while (in.peek() != -1 && i <= height * width){
@@ -64,6 +76,7 @@ class document{
                 }
                 i++;
             }
+            in.seekg(file_pointer);
             return window;
         }
         
@@ -88,7 +101,7 @@ class document{
         }
         
         void cursorDown(){
-            if (cursorY < height){
+            if (0 != -1){
                 cursorY++;
             }
         }
