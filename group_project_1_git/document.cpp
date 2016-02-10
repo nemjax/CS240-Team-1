@@ -27,9 +27,9 @@ class document{
     
     public:
         
-        document(std::string path, int docheight, int docwidth){
-            height = docheight;
-            width = docwidth;
+        document(std::string path, int docHeight, int docWidth){
+            height = docHeight;
+            width = docWidth;
             open(path);
             top = -1;
             in.open(documentPath.c_str());
