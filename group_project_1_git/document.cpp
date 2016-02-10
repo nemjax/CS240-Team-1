@@ -88,6 +88,7 @@ class document{
         }
         
         void cursorDown(){
+            
             if (cursorY < height){
                 cursorY++;
             }
