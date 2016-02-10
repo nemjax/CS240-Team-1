@@ -107,6 +107,7 @@ class document{
 };
 
 int main() {
+    
     document document("test.txt", 80, 40);
     std::cout << document.window() << std::endl;
     document.scrollDown();
