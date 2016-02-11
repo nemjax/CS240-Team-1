@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 class document{
     /*
@@ -25,6 +26,27 @@ class document{
         int width;
         std::ifstream in;//we could have this in every function but that is inefficient
         int fileLength;
+        
+        class modified{
+            private:
+                std::vector<char> chars;
+                std::vector<int> locations;
+            public:
+                modified(){
+                    
+                }
+                void add(int location, char value){
+                    chars.push_back(value);
+                    locations.push_back(location);
+                }
+                char get(int location){//note that this function will return null if nothing has been modified
+                    
+                }
+                ~modified(){
+                    
+                }
+        };
+        modified modified();
     
     public:
         
@@ -43,6 +65,7 @@ class document{
             std::string window = "";
             while (in.peek() != -1){
                 i++;
+                in.get();
             }
             in.seekg(in.beg);
             fileLength = i;
@@ -88,7 +111,6 @@ class document{
         
         void scrollDown(){
             std::cout << in.end << std::endl;
-            
             if (top < 0){
                 top--;
             }
@@ -113,6 +135,10 @@ class document{
         void cursorLeft(){
             
         }
+        
+        void keypress(char key = '\b'){
+            modified().add(in.tellg(), key);
+        }
 
         ~document(){
             in.close();
@@ -120,9 +146,9 @@ class document{
 };
 
 int main() {
-    
     document document("test.txt", 80, 40);
     std::cout << document.window() << std::endl;
     document.scrollDown();
+    document.keypress();
     return 0;
 }
