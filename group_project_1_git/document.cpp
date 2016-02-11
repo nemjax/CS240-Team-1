@@ -26,12 +26,11 @@ class document{
         int width;
         std::ifstream in;//we could have this in every function but that is inefficient
         int fileLength;
-        
         class modified{
-            private:
-                std::vector<char> chars;
-                std::vector<int> locations;
             public:
+                std::vector<char> chars;// I wish that these were private...  any ideas?
+                std::vector<int> locations;
+                
                 modified(){
                     
                 }
@@ -39,8 +38,14 @@ class document{
                     chars.push_back(value);
                     locations.push_back(location);
                 }
-                char get(int location){//note that this function will return null if nothing has been modified
-                    
+                std::string get(int location){//note that this function will return null if nothing has been modified
+                    std::string string;
+                    for (int i = 0; i != locations.size(); i++){
+                        if (locations.at(i) == location){
+                            string += chars.at(i);
+                        }
+                    }
+                    return string;
                 }
                 ~modified(){
                     
@@ -83,6 +88,10 @@ class document{
             
         }
         
+        void revert(){
+            
+        }
+        
         /*
          * window: a function that takes the current width and height in chars and 
          * returns a std::string containing the text to be displayed on the screen
@@ -93,9 +102,10 @@ class document{
             int i = 0;
             std::string window = "";
             while (in.peek() != -1 && i <= height * width){
-                if (i > top * width){
+                if (i > top){
                     char c = in.get();
-                    window += c;// note the += part...  you need "+=" for chars and "+" for strings
+                    window += c;// note the += part, you need "+=" for chars and "+" for strings
+                    window.append(modified.get(in.tellg()));
                 }
                 i++;
             }
@@ -105,14 +115,14 @@ class document{
         
         void scrollUp(){
             if (top > 0){
-                top++;
+                top = top + width;
             }
         }
         
         void scrollDown(){
             std::cout << in.end << std::endl;
             if (top < 0){
-                top--;
+                top = top - width;
             }
         }
         
@@ -129,14 +139,26 @@ class document{
         }
         
         void cursorRight(){
-            
+            if (cursorX < width){
+                cursorX++;
+            }
+            else{
+                cursorX = 0;
+                cursorDown();
+            }
         }
         
         void cursorLeft(){
-            
+            if (cursorX > 0){
+                cursorX--;
+            }
+            else{
+                cursorX = width - 1;
+                cursorUp();
+            }
         }
         
-        void keypress(char key = '\b'){
+        void keypress(char key = '\b'){//leave the parameter void if you want to add a "delete" character.
             modified().add(in.tellg(), key);
         }
 
