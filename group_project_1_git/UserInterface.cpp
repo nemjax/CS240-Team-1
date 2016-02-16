@@ -28,15 +28,14 @@ UserInterface::UserInterface(){
     noecho();
     keypad(window, TRUE);
 
-	window = NULL;
+    window = NULL;
     x = 0;
     y = 0;
-	height = getmaxy(stdscr);
-	width = getmaxx(stdscr);
-
-	window = newwin(height, width, x, y);
-
-	wrefresh(stdscr);
+    height = getmaxy(stdscr);
+    width = getmaxx(stdscr);
+    window = newwin(height, width, x, y);
+    
+    wrefresh(stdscr);
 }
 
 int UserInterface::takeInput(){
@@ -124,7 +123,7 @@ void UserInterface::setY(int y){
 
 UserInterface::~UserInterface(){
     delwin(window);
-	endwin();
+    endwin();
 }
 
 int main(){
